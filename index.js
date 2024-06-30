@@ -1,7 +1,8 @@
 const fs = require("fs")
 const inquirer = require("inquirer")
-const { Pool } = require('pg');
-
+const Query = require('./queries/queries')
+const newQuery = new Query
+console.log(newQuery.runQuery)
 
 const input = [
   {
@@ -20,31 +21,6 @@ const input = [
   },
 ];
 
-const pool = new Pool(
-  {
-    user: 'postgres',
-    password: 'postgreg',
-    host: 'localhost',
-    database: 'cms_db'
-  },
-  console.log(`Connected to the cms_db database.`)
-)
-
-
-
-pool.connect();
-
-function runQuery () {
-  pool.query('SELECT * FROM department', (err, { rows }) => {
-    if(!err) {
-      console.table(rows);
-    }
-    else {
-      console.log(error)
-    }  
-    init()  
-  });
-}
 
 
 // Function to initialize app
@@ -55,10 +31,12 @@ function init() {
     if (err) {
       throw new Error("No menu item chosen")
     } 
-    runQuery()
+    // Query.runQuery()
   }
   );
 }
+
+init();
 
 // function addEmployee () {
 //   inquirer
@@ -72,4 +50,15 @@ function init() {
 // }
 
 // Function call to initialize app
-init();
+
+// function runQuery () {
+//   pool.query('SELECT * FROM department', (err, { rows }) => {
+//     if(!err) {
+//       console.table(rows);
+//     }
+//     else {
+//       console.log(error)
+//     }  
+//     init()  
+//   });
+// }
