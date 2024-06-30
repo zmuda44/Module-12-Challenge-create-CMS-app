@@ -34,38 +34,31 @@ const pool = new Pool(
 
 pool.connect();
 
-// const sql = 'SELECT * FROM  department';
+function runQuery () {
+  pool.query('SELECT * FROM department', (err, { rows }) => {
+    if(!err) {
+      console.table(rows);
+    }
+    else {
+      console.log(error)
+    }  
+    init()  
+  });
+}
 
-// pool.query('SELECT * FROM department', function (err, { rows }) {
-//   if(err) {
 
-//   }
-//   console.log(rows);
-// });
-
-pool.query('SELECT * FROM department', (err, { rows }) => {
-  if(!err) {
-    console.log(rows);
+// Function to initialize app
+function init() {
+  inquirer
+  .prompt(input)  
+  .then((data, err) => { 
+    if (err) {
+      throw new Error("No menu item chosen")
+    } 
+    runQuery()
   }
-  else {
-    console.log(error)
-  }    
-});
-
-// pool.query()
-
-//Function to initialize app
-// function init() {
-//   inquirer
-//   .prompt(input)  
-//   .then((data, err) => { 
-//     if (err) {
-//       throw new Error("No menu item chosen")
-//     } 
-//     console.log(data)
-//   }
-//   );
-// }
+  );
+}
 
 // function addEmployee () {
 //   inquirer
@@ -79,4 +72,4 @@ pool.query('SELECT * FROM department', (err, { rows }) => {
 // }
 
 // Function call to initialize app
-// init();
+init();
