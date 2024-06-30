@@ -2,7 +2,7 @@ const fs = require("fs")
 const inquirer = require("inquirer")
 const Query = require('./queries/queries')
 const newQuery = new Query
-console.log(newQuery.runQuery)
+// console.log(newQuery.runQuery())
 
 const input = [
   {
@@ -31,7 +31,7 @@ function init() {
     if (err) {
       throw new Error("No menu item chosen")
     } 
-    // Query.runQuery()
+    console.log(Query.runQuery())
   }
   );
 }

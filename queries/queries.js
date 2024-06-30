@@ -12,20 +12,20 @@ const pool = new Pool(
 
 pool.connect();
 
-// class Query {
-//   constructor(query) {
-//     this.query = "say something";
-//   }
-//   runQuery () {
-//     pool.query('SELECT * FROM departments', (err, { rows }) => {
-//       if(err) {
-//         console.log(err);
-//       }      
-//       console.log(rows)      
-//     });
+class Query {
+  constructor(query) {
+    this.query = "say something";
+  }
+  runQuery () {
+    pool.query('SELECT * FROM department', (err, { rows }) => {
+      if(err) {
+        console.log(err);
+      }      
+      console.log(rows)      
+    });
 
-//   }
-// }
+  }
+}
 
 const newQuery = new Query
 console.log(newQuery.runQuery())
