@@ -1,10 +1,13 @@
 const fs = require("fs")
 const inquirer = require("inquirer")
-const Query = require('./queries/queries')
-const newQuery = new Query
-// console.log(newQuery.runQuery())
+const sqlQuery = require('./queries/sql-queries')
+// const queryFunction = require('./queries/query-function')
 
-const input = [
+// when you run newQuery.query() it gives the proper object but gives undefined before it
+// may have something to do with console.log()? when i did return it just returned the value
+
+
+const mainMenu = [
   {
     type: 'list',
       message: 'What would you like to do?',
@@ -21,19 +24,37 @@ const input = [
   },
 ];
 
+const addEmployeeMenu = {
+  type: 'input',
+  message: 'Enter Employee Name',
+  name: 'employeeName'
+}
 
+function addEmployee () {
+  inquirer
+  .prompt(addEmployeeMenu)
+  .then((data, err) => {
+    if (err) {
+      console.log(err)
+    }
+    const query =  new sqlQuery(data)  
+    console.log(query.addEmployee())  
+  })
+ 
+}
 
 // Function to initialize app
 function init() {
   inquirer
-  .prompt(input)  
+  .prompt(mainMenu)  
   .then((data, err) => { 
     if (err) {
       throw new Error("No menu item chosen")
-    } 
-    console.log(Query.runQuery())
-  }
-  );
+    }
+    if(data.mainMenu == 'Add Employee') {
+      addEmployee()
+    }
+  }) 
 }
 
 init();
