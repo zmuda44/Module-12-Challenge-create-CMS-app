@@ -30,19 +30,26 @@ const pool = new Pool(
   console.log(`Connected to the cms_db database.`)
 )
 
-// console.log(pool)
+
 
 pool.connect();
 
-pool.query('\dt', (err, res) => {
+// const sql = 'SELECT * FROM  department';
 
+// pool.query('SELECT * FROM department', function (err, { rows }) {
+//   if(err) {
+
+//   }
+//   console.log(rows);
+// });
+
+pool.query('SELECT * FROM department', (err, { rows }) => {
   if(!err) {
-    console.log(err);
+    console.log(rows);
   }
   else {
-    console.log(res)
-  }
-    
+    console.log(error)
+  }    
 });
 
 // pool.query()
