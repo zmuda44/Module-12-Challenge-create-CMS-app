@@ -25,15 +25,24 @@ class Query {
       }      
       else {
         // why can't i use return here. if i console.table on Query.getDepartments() in index.js i get undefined.
-        console.table(rows)
-        
+        console.table(rows)        
       }  
     });
-    
-
   }
   addEmployee () {
-    return this.params
+    pool.query('INSERT INTO employee (first_name, last_name, role_id, manager_id)
+      VALUES
+        (${firstName}) ', (err, { rows }) => {
+
+      if(err) {
+        console.log(err);
+        return
+      }      
+      else {
+        // why can't i use return here. if i console.table on Query.getDepartments() in index.js i get undefined.
+        console.table(rows)        
+      }  
+    });
   }
 }
 
