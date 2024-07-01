@@ -1,12 +1,17 @@
 const fs = require("fs")
 const inquirer = require("inquirer")
-const server = require('./server.js')
+const sqlQuery = require('./queries/sql-queries')
+// const queryFunction = require('./queries/query-function')
 
-const input = [
+// when you run newQuery.query() it gives the proper object but gives undefined before it
+// may have something to do with console.log()? when i did return it just returned the value
+
+
+const mainMenu = [
   {
     type: 'list',
-      message: 'Choose the shape of your logo.',
-      name: 'menu',
+      message: 'What would you like to do?',
+      name: 'mainMenu',
       choices: [
           { value: 'View All Employees' },   
           { value: 'Add Employee' },  
@@ -15,36 +20,66 @@ const input = [
           { value: 'Add Role' },               
           { value: 'View all Departments' },               
           { value: 'Add Department' },               
-          { value: '' },               
       ]
   },
 ];
 
-
-
-//Function to initialize app
-function init() {
-  inquirer
-  .prompt(input)  
-  .then((data, err) => { 
-    if (err) {
-      throw new Error("No menu item chosen")
-    } 
-    getRoutes(data)
-  }
-  );
+const addEmployeeMenu = {
+  type: 'input',
+  message: 'Enter Employee Name',
+  name: 'employeeName'
 }
 
 function addEmployee () {
   inquirer
-  .prompt(input)
-  .then(data, err) => {
+  .prompt(addEmployeeMenu)
+  .then((data, err) => {
     if (err) {
-      throw new Error("No input given")
+      console.log(err)
     }
-    getRoutes(data)
-  }
+    const query =  new sqlQuery(data)  
+    console.log(query.addEmployee())  
+  })
+ 
 }
 
-// Function call to initialize app
+// Function to initialize app
+function init() {
+  inquirer
+  .prompt(mainMenu)  
+  .then((data, err) => { 
+    if (err) {
+      throw new Error("No menu item chosen")
+    }
+    if(data.mainMenu == 'Add Employee') {
+      addEmployee()
+    }
+  }) 
+}
+
 init();
+
+// function addEmployee () {
+//   inquirer
+//   .prompt(input)
+//   .then(data, err) => {
+//     if (err) {
+//       throw new Error("No input given")
+//     }
+//     getRoutes(data)
+//   }
+// }
+
+// Function call to initialize app
+
+// function runQuery () {
+//   pool.query('SELECT * FROM department', (err, { rows }) => {
+//     if(!err) {
+//       console.table(rows);
+//     }
+//     else {
+//       console.log(error)
+//     }  
+//     init()  
+//   });
+// }
