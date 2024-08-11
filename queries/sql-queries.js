@@ -12,41 +12,55 @@ const pool = new Pool(
 
 pool.connect();
 
-class Query {
-  constructor(params) {
-    this.params = params;
-  }
-  getDepartments () {
-    pool.query('SELECT * FROM department', (err, { rows }) => {
 
-      if(err) {
-        console.log(err);
-        return
-      }      
-      else {
-        // why can't i use return here. if i console.table on Query.getDepartments() in index.js i get undefined.
-        console.table(rows)        
-      }  
-    });
-  }
-  addEmployee () {
-    pool.query('INSERT INTO employee (first_name, last_name, role_id, manager_id)
-      VALUES
-        (${firstName}) ', (err, { rows }) => {
-
-      if(err) {
-        console.log(err);
-        return
-      }      
-      else {
-        // why can't i use return here. if i console.table on Query.getDepartments() in index.js i get undefined.
-        console.table(rows)        
-      }  
-    });
-  }
+function viewAllDepartments(init) {
+  pool.query('SELECT * FROM department', (err, { rows }) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(rows);
+    init();
+  });
 }
 
-// const newQuery = new Query
-// console.log(newQuery.runQuery())
+function viewAllRoles(init) {
+  const query = 'SELECT * FROM role JOIN department ON role.department = department.id';
+  pool.query(query, (err, { rows }) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(rows);
+    init();
+  });
+}
 
-module.exports = Query
+function viewAllEmployees(init) {
+  const query = 'SELECT * FROM employee JOIN role ON employee.role_id = role.id';
+  pool.query(query, (err, { rows }) => {  
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(rows);
+    init();
+  });
+}
+
+function addDepartment(data, init) {
+  console.log(data)
+  pool.query('INSERT INTO department (name) VALUES ($1)', [data], (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Added ${data} to database`);
+    init();
+  });
+}
+
+
+
+module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment }
+
