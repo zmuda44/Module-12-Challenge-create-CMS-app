@@ -19,13 +19,21 @@ function viewAllDepartments(init) {
       console.log(err);
       return;
     }
-    console.table(rows);
+    console.table(rows)
     init();
   });
 }
 
 function viewAllRoles(init) {
-  const query = 'SELECT * FROM role JOIN department ON role.department = department.id';
+  const query = `
+    SELECT 
+      role.id, 
+      role.title, 
+      role.salary, 
+      department.name AS department
+    FROM role 
+    JOIN department ON role.department = department.id
+  `;
   pool.query(query, (err, { rows }) => {
     if (err) {
       console.log(err);
@@ -37,7 +45,25 @@ function viewAllRoles(init) {
 }
 
 function viewAllEmployees(init) {
-  const query = 'SELECT * FROM employee JOIN role ON employee.role_id = role.id';
+  const query = `
+  SELECT 
+    employee.first_name, 
+    employee.last_name, 
+    role.title, 
+    role.salary
+  FROM 
+    employee
+  JOIN
+    role ON employee.role_id = role.id
+  `;
+
+// JOIN 
+
+// LEFT JOIN 
+// employee AS manager ON employee.manager_id = manager.id
+
+// JOIN 
+// department ON role.department = department.id
   pool.query(query, (err, { rows }) => {  
     if (err) {
       console.log(err);
@@ -60,7 +86,6 @@ function addDepartment(data, init) {
   });
 }
 function addRole(data, init) {
-  console.log(data)
   pool.query('INSERT INTO role (title, salary, department) VALUES ($1, $2, $3)', [data.title, data.salary, data.department], (err) => {
     if (err) {
       console.log(err);
