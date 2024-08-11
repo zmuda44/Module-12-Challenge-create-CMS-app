@@ -48,7 +48,19 @@ function viewAllEmployees(init) {
   });
 }
 
+function addDepartment(data, init) {
+  console.log(data)
+  pool.query('INSERT INTO department (name) VALUES ($1)', [data], (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Added ${data} to database`);
+    init();
+  });
+}
 
 
-module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees }
+
+module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment }
 

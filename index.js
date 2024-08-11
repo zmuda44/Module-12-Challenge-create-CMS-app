@@ -3,7 +3,8 @@ const inquirer = require("inquirer")
 const {
   viewAllDepartments,
   viewAllRoles,
-  viewAllEmployees
+  viewAllEmployees,
+  addDepartment
 } = require('./queries/sql-queries');
 
 
@@ -23,6 +24,19 @@ const mainMenu = [
       ]
   },
 ];
+
+const addDepartmentMenu = [
+  {
+    type: "input",
+    message: "What is the name of your department?",
+    name: "textChars",
+  },
+  {
+    type: "input",
+    message: "What is the name of your department?",
+    name: "textChars",
+  },
+]
 
 
 // Function to initialize app
@@ -55,7 +69,14 @@ function init() {
       viewAllDepartments(init)
     }
     if(data.mainMenu == 'Add Department') {
-      // viewAllEmployees()
+      inquirer
+      .prompt(addDepartmentMenu)
+      .then((data, err) => { 
+        if (err) {
+          throw new Error("No menu item chosen")
+        }
+        addDepartment(data.textChars, init)
+      })
     }
   }) 
 }
