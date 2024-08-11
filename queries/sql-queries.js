@@ -12,7 +12,6 @@ const pool = new Pool(
 
 pool.connect();
 
-
 function viewAllDepartments(init) {
   pool.query('SELECT * FROM department', (err, { rows }) => {
     if (err) {
@@ -20,6 +19,18 @@ function viewAllDepartments(init) {
       return;
     }
     console.table(rows)
+    init();
+  });
+}
+
+function addDepartment(data, init) {
+  console.log(data)
+  pool.query('INSERT INTO department (name) VALUES ($1)', [data], (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Added ${data} to database`);
     init();
   });
 }
@@ -44,6 +55,17 @@ function viewAllRoles(init) {
   });
 }
 
+function addRole(data, init) {
+  pool.query('INSERT INTO role (title, salary, department) VALUES ($1, $2, $3)', [data.title, data.salary, data.department], (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Added ${data.title} to database`);
+    init();
+  });
+}
+
 function viewAllEmployees(init) {
   const query = `
   SELECT 
@@ -56,14 +78,6 @@ function viewAllEmployees(init) {
   JOIN
     role ON employee.role_id = role.id
   `;
-
-// JOIN 
-
-// LEFT JOIN 
-// employee AS manager ON employee.manager_id = manager.id
-
-// JOIN 
-// department ON role.department = department.id
   pool.query(query, (err, { rows }) => {  
     if (err) {
       console.log(err);
@@ -74,38 +88,6 @@ function viewAllEmployees(init) {
   });
 }
 
-function addDepartment(data, init) {
-  console.log(data)
-  pool.query('INSERT INTO department (name) VALUES ($1)', [data], (err) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    console.log(`Added ${data} to database`);
-    init();
-  });
-}
-function addRole(data, init) {
-  pool.query('INSERT INTO role (title, salary, department) VALUES ($1, $2, $3)', [data.title, data.salary, data.department], (err) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    console.log(`Added ${data.title} to database`);
-    init();
-  });
-}
-function addEmployee(data, init) {
-  const {first_name, last_name, role_id, manager_id} = data;
-  pool.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)', [first_name, last_name, role_id, manager_id], (err) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    console.log(`Added ${first_name} ${last_name} to database`);
-    init();
-  });
-}
 function updateEmployeeRole(data, init) {
   console.log(data)
   pool.query(`UPDATE employee SET role_id = $1 WHERE id = $2`, [data.role_id, data.id], (err) => {
@@ -118,7 +100,17 @@ function updateEmployeeRole(data, init) {
   });
 }
 
-
+function addEmployee(data, init) {
+  const {first_name, last_name, role_id, manager_id} = data;
+  pool.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)', [first_name, last_name, role_id, manager_id], (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Added ${first_name} ${last_name} to database`);
+    init();
+  });
+}
 
 module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment, addRole, addEmployee, updateEmployeeRole }
 
