@@ -1,8 +1,7 @@
-// const { query } = require("express")
 const fs = require("fs")
 const inquirer = require("inquirer")
-const QueryData = require('./queries/sqlQueries')
-const Query = new QueryData
+
+
 
 
 
@@ -23,19 +22,13 @@ const addDeptMenu = {
 }
 
 
-
-
-
-
-function queryFunction (data) {
-  if(data.mainMenu == 'Add Employee') {
-    addEmployee()
-  }
+// function queryFunction (data) {
+//   if(data.mainMenu == 'Add Employee') {
+//     addEmployee()
+//   }
   
-  console.log(data.mainMenu)
+//   console.log(data.mainMenu)
 
-
-
-}
+// }
 
 module.exports = queryFunction
