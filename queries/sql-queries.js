@@ -70,8 +70,30 @@ function addRole(data, init) {
     init();
   });
 }
+function addEmployee(data, init) {
+  const {first_name, last_name, role_id, manager_id} = data;
+  pool.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)', [first_name, last_name, role_id, manager_id], (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Added ${first_name} ${last_name} to database`);
+    init();
+  });
+}
+function updateEmployeeRole(data, init) {
+  console.log(data)
+  pool.query(`UPDATE employee SET role_id = $1 WHERE id = $2`, [data.role_id, data.id], (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Updated employee role`);
+    init();
+  });
+}
 
 
 
-module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment, addRole }
+module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment, addRole, addEmployee, updateEmployeeRole }
 

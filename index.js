@@ -5,7 +5,9 @@ const {
   viewAllRoles,
   viewAllEmployees,
   addDepartment,
-  addRole
+  addRole,
+  addEmployee,
+  updateEmployeeRole
 } = require('./queries/sql-queries');
 
 
@@ -25,7 +27,6 @@ const mainMenu = [
       ]
   },
 ];
-
 const addDepartmentMenu = [
   {
     type: "input",
@@ -85,15 +86,39 @@ const addEmployeeMenu = [
   },
   {
     type: 'list',
-      message: "What is the employee's role?",
+      message: "Who is the employee's manager?",
       name: 'manager_id',
+      choices: [
+          { name: 'Greg Bailey', value: 1 },   
+          { name: 'Todd Etta', value: 2 },  
+          { name: 'Alvin Nikolia', value: 3 },  
+          { name: 'Courtney Raymond', value: 4 },          
+      ]
+  },
+]
+const updateEmployeeRoleMenu = [
+  {
+    type: 'list',
+      message: "Which employee's role do you want to update?",
+      name: 'id',
+      choices: [
+        { name: 'Greg Bailey', value: 1 },   
+        { name: 'Todd Etta', value: 2 },  
+        { name: 'Alvin Nikolia', value: 3 },  
+        { name: 'Courtney Raymond', value: 4 },          
+      ]
+  },
+  {
+    type: 'list',
+      message: "Which role do you want to assign the selected employee?",
+      name: 'role_id',
       choices: [
           { name: 'Foreman', value: 1 },   
           { name: 'Stocker', value: 2 },  
           { name: 'Bookkeeper', value: 3 },  
           { name: 'Sales Manager', value: 4 },          
       ]
-  },
+  }
 ]
 
 
@@ -110,11 +135,24 @@ function init() {
       viewAllEmployees(init)
     }
     if(data.mainMenu == 'Add Employee') {
-      // viewAllEmployees()
+      inquirer
+      .prompt(addEmployeeMenu)
+      .then((data, err) => { 
+        if (err) {
+          throw new Error("No menu item chosen")
+        }
+        addEmployee(data, init)
+      })
     }
-
     if(data.mainMenu == 'Update Employee Role') {
-      // viewAllEmployees()
+      inquirer
+      .prompt(updateEmployeeRoleMenu)
+      .then((data, err) => { 
+        if (err) {
+          throw new Error("No menu item chosen")
+        }
+        updateEmployeeRole(data, init)
+      })
     }
     if(data.mainMenu == 'View All Roles') {
       viewAllRoles(init)
