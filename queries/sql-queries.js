@@ -59,8 +59,19 @@ function addDepartment(data, init) {
     init();
   });
 }
+function addRole(data, init) {
+  console.log(data)
+  pool.query('INSERT INTO role (title, salary, department) VALUES ($1, $2, $3)', [data.title, data.salary, data.department], (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(`Added ${data.title} to database`);
+    init();
+  });
+}
 
 
 
-module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment }
+module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment, addRole }
 

@@ -4,7 +4,8 @@ const {
   viewAllDepartments,
   viewAllRoles,
   viewAllEmployees,
-  addDepartment
+  addDepartment,
+  addRole
 } = require('./queries/sql-queries');
 
 
@@ -37,6 +38,63 @@ const addDepartmentMenu = [
     name: "textChars",
   },
 ]
+const addRoleMenu = [
+  {
+    type: "input",
+    message: "What is the name of the role?",
+    name: "title",
+  },
+  {
+    type: "input",
+    message: "What is the salary of the role?",
+    name: "salary",
+  },
+  {
+    type: 'list',
+      message: 'What department',
+      name: 'department',
+      choices: [
+          { name: 'Shipping', value: 1 },   
+          { name: 'Receiving', value: 2 },  
+          { name: 'Accounting', value: 3 },  
+          { name: 'Marketing', value: 4 },          
+      ]
+  },
+]
+const addEmployeeMenu = [
+  {
+    type: "input",
+    message: "What is the employee's first name?",
+    name: "first_name",
+  },
+  {
+    type: "input",
+    message: "What is the employee's last name?",
+    name: "last_name",
+  },
+  {
+    type: 'list',
+      message: "What is the employee's role?",
+      name: 'role_id',
+      choices: [
+          { name: 'Foreman', value: 1 },   
+          { name: 'Stocker', value: 2 },  
+          { name: 'Bookkeeper', value: 3 },  
+          { name: 'Sales Manager', value: 4 },          
+      ]
+  },
+  {
+    type: 'list',
+      message: "What is the employee's role?",
+      name: 'manager_id',
+      choices: [
+          { name: 'Foreman', value: 1 },   
+          { name: 'Stocker', value: 2 },  
+          { name: 'Bookkeeper', value: 3 },  
+          { name: 'Sales Manager', value: 4 },          
+      ]
+  },
+]
 
 
 // Function to initialize app
@@ -59,11 +117,17 @@ function init() {
       // viewAllEmployees()
     }
     if(data.mainMenu == 'View All Roles') {
-      console.log("hit")
       viewAllRoles(init)
     }
     if(data.mainMenu == 'Add Role') {
-      // viewAllEmployees()
+      inquirer
+      .prompt(addRoleMenu)
+      .then((data, err) => { 
+        if (err) {
+          throw new Error("No menu item chosen")
+        }
+        addRole(data, init)
+      })
     }
     if(data.mainMenu == 'View All Departments') {
       viewAllDepartments(init)
