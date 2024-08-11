@@ -25,7 +25,7 @@ function viewAllDepartments(init) {
 }
 
 function viewAllRoles(init) {
-  const query = `SELECT * FROM role`
+  const query = 'SELECT * FROM role JOIN department ON role.department = department.id';
   pool.query(query, (err, { rows }) => {
     if (err) {
       console.log(err);
