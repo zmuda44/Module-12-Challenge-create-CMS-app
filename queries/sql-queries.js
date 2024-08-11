@@ -36,8 +36,19 @@ function viewAllRoles(init) {
   });
 }
 
+function viewAllEmployees(init) {
+  const query = 'SELECT * FROM employee JOIN role ON employee.role_id = role.id';
+  pool.query(query, (err, { rows }) => {  
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(rows);
+    init();
+  });
+}
 
 
 
-module.exports = { viewAllDepartments, viewAllRoles }
+module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees }
 
