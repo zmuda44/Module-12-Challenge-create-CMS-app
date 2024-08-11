@@ -24,6 +24,20 @@ function viewAllDepartments(init) {
   });
 }
 
+function viewAllRoles(init) {
+  const query = `SELECT * FROM role`
+  pool.query(query, (err, { rows }) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.table(rows);
+    init();
+  });
+}
 
-module.exports = { viewAllDepartments }
+
+
+
+module.exports = { viewAllDepartments, viewAllRoles }
 

@@ -2,6 +2,7 @@ const fs = require("fs")
 const inquirer = require("inquirer")
 const {
   viewAllDepartments,
+  viewAllRoles
 } = require('./queries/sql-queries');
 
 
@@ -14,9 +15,9 @@ const mainMenu = [
           { value: 'View All Employees' },   
           { value: 'Add Employee' },  
           { value: 'Update Employee Role' },  
-          { value: 'View all Roles' },               
+          { value: 'View All Roles' },               
           { value: 'Add Role' },               
-          { value: 'View all Departments' },               
+          { value: 'View All Departments' },               
           { value: 'Add Department' },               
       ]
   },
@@ -43,7 +44,8 @@ function init() {
       // viewAllEmployees()
     }
     if(data.mainMenu == 'View All Roles') {
-      // viewAllEmployees()
+      console.log("hit")
+      viewAllRoles(init)
     }
     if(data.mainMenu == 'View All Roles') {
       // viewAllEmployees()
@@ -51,7 +53,7 @@ function init() {
     if(data.mainMenu == 'Add Role') {
       // viewAllEmployees()
     }
-    if(data.mainMenu == 'View all Departments') {
+    if(data.mainMenu == 'View All Departments') {
       viewAllDepartments(init)
     }
     if(data.mainMenu == 'Add Department') {
